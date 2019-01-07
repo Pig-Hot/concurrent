@@ -1,0 +1,20 @@
+1.阻塞队列BlockingQueue:通常用于一个线程生产对象,一个线程消费对象 take如果队列没有可取对象阻塞,put如果队列满了阻塞
+    a.ArrayBlockingQueue类实现了BlockingQueue接口。ArrayBlockingQueue是一个有界的阻塞队列，其内部实现是将对象放到一个数组里。有界
+    也就意味着，它不能够存储无限多数量的元素。它有一个同一时间能够存储元素数量的上限。你可以在对其初始化的时候设定这个上限，但之后就无法
+    对这个上限进行修改了(译者注：因为它是基于数组实现的，也就具有数组的特性：一旦初始化，大小就无法修改) 。ArrayBlockingQueue内部以FIF
+    O(先进先出 )的顺序对元素进行存储。有元素之中是放入时间最久的那个，而尾元素则是最短的那个
+    b.DelayQueue实现了BlockingQueue是一个延迟队列,DelayQueue将会在每个元素的getDelay()方法返回的值的时间段之后才释放掉该元素。如果
+    返回的是0或者负值，延迟将被认为过期，该元素将会在DelayQueue的下一次take被调用的时候被释放掉。传递给getDelay方法的getDelay 实例是
+    一个枚举类型，它表明了将要延迟的时间段
+    c.链阻塞队列LinkedBlockQueue内部以一个链式结构对其元素进行存储,FIFO的顺序对元素进行存储
+    d.具有优先级的阻塞队列PriorityBlockingQueue是一个无界的并发队列,他使用和类PriorityQueue一样的排序规则,你无法插入一个NULL进去,并且
+    必须实现Comparable接口。
+    e.阻塞双端队列BlockingDeque又是生产者又是消费者
+2.并发Map ConcurrentMap:
+    ConcurrentMap接口表示一个能够对别人的访问(插入和提取)进行并发处理的Map,ConcurrentMap除了从其父接口Map继承来的方法之外还有一些额外
+    的原子性方法。
+    ConcurrentNavigableMap:支持并发的NavigableMap
+3.CountDownLatch:是一个并发构造，它允许一个或多个线程等待一系列指定操作的完成。CountDownLatch以一个给定的数量初始化。countDown()
+                 每被调用一次，这一数量就减一。通过调用await()方法之一，线程可以阻塞等待这一数量到达零。
+4.CyclicBarrier:同步机制,所以线程必须等待一个栅栏
+5.交换机Exchanger:表示一种两个线程可以进行互相交换对象的会和点
