@@ -1,0 +1,28 @@
+执行策略:
+   一个执行策略需要包括:what,how,where,when
+   任务在什么线程执行,可以多少并发以及多少等待,任务什么顺序执行,任务什么时候执行以及结束,任务执行前后需要额外什么处理,系统过载如何选择放弃哪个任务
+
+线程池:
+    线程池管理一个工作者线程的同构池,在线程池执行任务,实现线程可重用,处理请求时线程已存在,减少响应时间
+    Executors中静态方法创建线程池
+        newFixedThreadPool: 定长线程池
+        newCachedThreadPool: 可缓存线程池
+        newSingleThreadPool:  单线程化
+        newScheduleThreadPool: 定长以及周期执行任务
+
+Executor生命周期:
+    executor是异步执行,所以中间的任务可能完成,也可能没有完成,如果无法正确关闭就会影响到JVM,为了解决这个问题提出了ExecutorService
+    ExecutorService暗示了生命周期有运行,关闭,终止;shutdownNow方法启动会强制关闭,尝试取消所有的运行中任务和没有开始的任务,拒绝处理是
+        ThreadPoolExecutor提供的方法,我们常用方法是通过awaitTermination方法等待ExecutorService状态到达终止后调用shutdown
+
+Callable和Future
+    Runnable和Callable都是抽象的计算型任务,一个任务都由创建、提交、开始、完成组成,对于Executor我们可以允许取消已经提交尚未开始的任务
+        对于已经开始的任务只能中断才可以取消
+     Future描叙了任务的生命周期,并且提供了相关方法来获取任务结果、取消任务已经检验任务状态的方法,注意任务的生命周期都是单向的
+     ExecutorService的submit都返回的是Future,因此你可以通过ExecutorService实现
+
+CompletionService
+    如果你提交了一批任务,并且希望返回的时候得到结果,为此你不得不保存与每个任务相关联的Future,然后不断的调用get
+    CompletionService结合了Executor和BlockQueue功能,我们可以将Callable任务提交给它去执行,然后类似于队列的take和poll方法,完成的时候
+        得到一个打包的Future,ExecutorCompletionService实现了CompletionService接口并将计算任务委托给一个Executor
+
